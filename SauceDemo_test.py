@@ -3,56 +3,77 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+# Define Variables
+URL = "https://www.saucedemo.com/"
+USERNAME = "standard_user"
+PASSWORD = "secret_sauce"
+WAIT_TIME = 5
 
-# Initialize WebDriver
+# Initialize Chrome browser instance using selenium webDriver
 driver = webdriver.Chrome()
 
-# Open the login page
-driver.get("https://www.saucedemo.com")  # Fixed the URL to the login page
-time.sleep(5)
+# Navigate to the login page of Sauce Demo
+driver.get(URL)
+time.sleep(WAIT_TIME) # wait for page  to load
 
-# Log in
-driver.find_element(By.ID, "user-name").send_keys("problem_user")  # Enter username
-time.sleep(5)
-driver.find_element(By.ID, "password").send_keys("secret_sauce")  # Enter password
-time.sleep(5)
-driver.find_element(By.ID, "login-button").click()  # Click Log in button
-time.sleep(5)
+# Maximize window
+driver.maximize_window()
 
-# Verify login success by checking the inventory page
-if "inventory.html" in driver.current_url:
-    print("Login successful!")
-else:
-    print("Login failed!")
+# Define Elements as Variables
+Username = driver.find_element(By.ID,"user-name")
+Password = driver.find_element(By.ID,"password")
+Login = driver.find_element(By.ID,"login-button")
 
-# Product Page - Adding items to the cart
-driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack").click()  # Add first item to cart
-time.sleep(5)
+# Perform Login
+Username.send_keys(USERNAME)
+time.sleep(WAIT_TIME)
 
-driver.find_element(By.ID, "add-to-cart-sauce-labs-bike-light").click()  # Add second item to cart
-time.sleep(5)
+Password.send_keys(PASSWORD)
+time.sleep(WAIT_TIME)
 
-driver.find_element(By.XPATH, "//*[@id='add-to-cart-sauce-labs-bolt-t-shirt']").click()  # Add third item to cart
-time.sleep(5)
+Login.click()
+time.sleep(WAIT_TIME)
 
-driver.find_element(By.ID, "add-to-cart-sauce-labs-fleece-jacket").click()  # Add fourth item to cart
-time.sleep(5)
+# Define Menu and Logout buttons
+menu = driver.find_element(By.ID,"react-burger-menu-btn")
+Logout = driver.find_element(By.ID,"logout_sidebar_link")
 
-driver.find_element(By.ID, "add-to-cart-sauce-labs-onesie").click()  # Add fifth item to cart
-time.sleep(5)
+# List of products to add to cart
+PRODUCT = [
+   "add-to-cart-sauce-labs-backpack",
+   "add-to-cart-sauce-labs-bike-light",
+   "add-to-cart-sauce-labs-bolt-t-shirt",
+   "add-to-cart-sauce-labs-fleece-jacket",
+   "add-to-cart-sauce-labs-onesie",
+   "add-to-cart-test.allthethings()-t-shirt-(red)"
+]
+# Add product to cart using a loop
+for product_id in PRODUCT:
+   driver.find_element(By.ID, product_id).click()
+time.sleep(WAIT_TIME)
 
-driver.find_element(By.XPATH, "//*[@id='add-to-cart-test.allthethings()-t-shirt-(red)']").click()
-time.sleep(50)
+# Click on the burger menu
+menu.click()
+time.sleep(WAIT_TIME)
 
-# Click hamburger menu and logout
-driver.find_element(By.ID, "react-burger-menu-btn").click()  # Click hamburger menu
-time.sleep(5)
+# Click on Logout
+Logout.click()
+time.sleep(WAIT_TIME)
 
-driver.find_element(By.ID, "logout_sidebar_link").click()  # Click log out button
-time.sleep(5)
-
-# Close the browser
+# Quit browser
 driver.quit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
